@@ -19,6 +19,8 @@ sealed class HttpResponseModel<out T> {
      *
      * @return ответ от HTTP.
      */
-    data class Error<T>(val code: Int, val message: String) : HttpResponseModel<T>()
+    data class Error<T>(val code: Int, val message: String) : HttpResponseModel<T>() {
+        constructor(t: Throwable) : this(0,t.message ?: "")
+    }
 }
 

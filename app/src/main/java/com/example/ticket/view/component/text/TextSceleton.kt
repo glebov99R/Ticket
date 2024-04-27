@@ -39,7 +39,7 @@ fun TextBody(
         color = color,
         style = AppTypography.body1,
         overflow = TextOverflow.Ellipsis,
-        maxLines = 1,
+        maxLines = 2, // Важно
         textAlign = textAlign
     )
 }
