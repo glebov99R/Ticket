@@ -1,10 +1,9 @@
 @file:Suppress("UNUSED_EXPRESSION")
 
-package com.example.ticket.screen
+package com.example.ticket.screen.loginScreen
 
 import android.annotation.SuppressLint
 import android.content.IntentFilter
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -12,25 +11,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
@@ -40,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.barcode.BarcodeUtility
 import com.example.ticket.BuildConfig
 import com.example.ticket.R
+import com.example.ticket.constant.Constants
 import com.example.ticket.navigation.MainActions
 import com.example.ticket.state.LoginViewState
 import com.example.ticket.ui.theme.backgroundLayout
@@ -142,6 +136,7 @@ fun LoginScreen(
                     onDismiss = { viewModel.clearLoginViewState() },
                     onConfirm = {
                         sharedPreferenceManager.saveData("barcode_user",scannedBarcode.value)
+                        viewModel.fetchPersonFromBarcode(scannedBarcode.value)
                         action.gotoMainScreen.invoke()
                         viewModel.clearLoginViewState()
                     },

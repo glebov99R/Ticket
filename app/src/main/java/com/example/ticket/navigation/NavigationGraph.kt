@@ -4,8 +4,9 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.ticket.screen.LoginScreen
-import com.example.ticket.screen.MainScreen
+import com.example.ticket.screen.loginScreen.LoginScreen
+import com.example.ticket.screen.mainScreen.MainScreen
+import com.example.ticket.screen.settingsScreen.SettingsScreen
 import com.example.ticket.viewmodel.MyViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -26,7 +27,11 @@ fun NavigationGraph(
         }
 
         composable(Screen.MainScreen.route){
-            MainScreen(viewModel)
+            MainScreen(viewModel, action)
+        }
+
+        composable(Screen.SettingsScreen.route){
+            SettingsScreen(viewModel, action)
         }
 
 //        composable("${Screen.Result.route}/{result}"){

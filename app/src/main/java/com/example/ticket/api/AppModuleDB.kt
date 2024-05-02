@@ -25,4 +25,7 @@ object AppModuleDB {
 
     @Provides
     fun provideUserDao(db: DatabaseApi) = db.userDao()
+
+    @Provides
+    fun providePersonDao(db: DatabaseApi) = db.personDao()
 }

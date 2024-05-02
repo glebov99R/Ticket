@@ -12,6 +12,7 @@ import com.example.ticket.dto.LoginDto
 import com.example.ticket.dto.PackUnpackDto
 import com.example.ticket.dto.PrintTicketDto
 import com.example.ticket.dto.ScannedTicketDto
+import com.example.ticket.model.local.PersonModelLocal
 import com.example.ticket.model.local.UserModel
 import com.example.ticket.model.remote.SaveSettingsDto
 import com.example.ticket.repository.DataBaseRepository
@@ -45,6 +46,12 @@ class MyViewModel @Inject constructor(
     private val _currentUser = MutableLiveData<UserModel>()
     val currentUser: LiveData<UserModel>
         get() = _currentUser
+
+    private val _currentPerson = MutableLiveData<PersonModelLocal>()
+    val currentPerson: LiveData<PersonModelLocal>
+        get() = _currentPerson
+
+    val allPersonListFromLocalDb = dataBaseRepository.getPersonList
 
     private val _getPlanOfAreaViewState =
         MutableStateFlow<GetPlanOfAreaViewState>(GetPlanOfAreaViewState.Idle)
@@ -362,6 +369,7 @@ class MyViewModel @Inject constructor(
                 val response = operationRepository.getPerson()
                 when(response){
                    is HttpResponseModel.Success -> {
+                       dataBaseRepository.cachePersonList(response.data!!)
                        _getPersonViewState.value = GetPersonViewState.Success(response.data!!)
                    }
                     is HttpResponseModel.Error -> {
@@ -376,6 +384,14 @@ class MyViewModel @Inject constructor(
                     message = "Ошибка подлкючения к серверу",
                     code = 303
                 )
+            }
+        }
+    }
+
+    fun fetchPersonFromBarcode(barcode: String) {
+        viewModelScope.launch {
+            dataBaseRepository.getPersonFromBarcode(barcode).observeForever { person ->
+                _currentPerson.postValue(person)
             }
         }
     }
